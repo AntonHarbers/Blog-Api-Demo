@@ -6,6 +6,8 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var indexRouter = require('./routes/index_router');
 var userRouter = require('./routes/user_router');
+var commentRouter = require('./routes/comments_router');
+var postRouter = require('./routes/post_router');
 var helmet = require('helmet');
 var compression = require('compression');
 require('dotenv').config();
@@ -45,6 +47,8 @@ app.use(compression());
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
+app.use('/posts', postRouter);
+app.use('/comments', commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

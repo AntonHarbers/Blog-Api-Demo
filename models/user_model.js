@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minLength: 6 },
   created_at: { type: Date, default: Date.now() },
+  is_admin: { type: Boolean, default: false },
 });
 
 // // Formatted date to be used in front end

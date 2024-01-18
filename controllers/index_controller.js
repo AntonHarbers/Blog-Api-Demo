@@ -25,7 +25,7 @@ exports.post_sign_up = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.send(errors.array);
+      res.send(errors.array());
       return;
     }
 
@@ -40,3 +40,7 @@ exports.post_sign_up = [
     return;
   }),
 ];
+
+exports.post_log_in = [asyncHandler(async (req, res, next) => {})];
+
+exports.get_log_out = [asyncHandler(async (req, res, next) => {})];
