@@ -4,15 +4,27 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+
 var indexRouter = require('./routes/index_router');
 var userRouter = require('./routes/user_router');
 var commentRouter = require('./routes/comments_router');
 var postRouter = require('./routes/post_router');
+
+var User = require('./models/user_model');
+
 var helmet = require('helmet');
 var compression = require('compression');
+var RateLimit = require('express-rate-limit');
+
 require('dotenv').config();
 
 var app = express();
+
+// Rate Limiting
+const limiter = RateLimit({
+  windowsMs: 1 * 60 * 1000, // 1 minute
+  max: 240,
+});
 
 //mongoose setup
 mongoose.set('strictQuery', false);
@@ -27,11 +39,15 @@ async function main() {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.set('trust proxy', 1);
+
+// Middleware chain
 if (process.env.NODE_ENV !== 'production') {
   app.use(logger('dev'));
 } else {
   app.use(logger('combined'));
 }
+app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -63,7 +79,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json(err);
 });
 
 module.exports = app;
