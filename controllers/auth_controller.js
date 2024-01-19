@@ -6,6 +6,27 @@ const User = require('../models/user_model');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+exports.get_session = [
+  (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    try {
+      const decodedToken = jwt.decode(token);
+      const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+      const timeLeft = decodedToken.exp - currentTime; // Time left in seconds
+
+      // Respond with the time left
+      res.json({
+        message: 'You are signed in.',
+        expiresIn: timeLeft > 0 ? `${timeLeft} seconds` : 'Token expired',
+        admin: req.user.is_admin,
+      });
+    } catch (error) {
+      res.status(400).json({ error: 'Invalid token' });
+    }
+  },
+];
+
 exports.post_sign_up = [
   body('username', 'username must not be empty')
     .trim()
@@ -31,7 +52,7 @@ exports.post_sign_up = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.json(errors.array());
+      res.json(errors);
       return;
     }
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {

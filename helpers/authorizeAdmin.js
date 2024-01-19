@@ -6,6 +6,7 @@ const authorizeAdmin = asyncHandler(async (req, res, next) => {
   const user = await User.find({ username: username }).exec();
 
   req.user.is_admin = user[0].is_admin;
+  req.user.id = user[0]._id;
 
   next();
 });

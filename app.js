@@ -5,12 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index_router');
+var authRouter = require('./routes/auth_router');
 var userRouter = require('./routes/user_router');
 var commentRouter = require('./routes/comments_router');
 var postRouter = require('./routes/post_router');
-
-var User = require('./models/user_model');
 
 var helmet = require('helmet');
 var compression = require('compression');
@@ -35,10 +33,6 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 app.set('trust proxy', 1);
 
 // Middleware chain
@@ -61,7 +55,7 @@ app.use(
 );
 app.use(compression());
 
-app.use('/', indexRouter);
+app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);

@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const postController = require('../controllers/post_controller');
+var authenticateJWT = require('../helpers/authenticateJWT');
+const authorizeAdmin = require('../helpers/authorizeAdmin');
 
 /* GET home page. */
 router.get('/', postController.get_posts);
