@@ -6,6 +6,7 @@ const Post = require('../models/post_model');
 exports.get_posts = [
   asyncHandler(async (req, res, next) => {
     const posts = await Post.find({})
+      .sort({ created_at: 1 })
       .populate('author', 'username email')
       .exec();
     res.json(posts);
