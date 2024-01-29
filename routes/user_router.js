@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/user_controller');
-var authenticateJWT = require('../helpers/authenticateJWT');
-const authorizeAdmin = require('../helpers/authorizeAdmin');
+var authenticateJWT = require('../middleware/authenticateJWT');
+const authorizeAdmin = require('../middleware/authorizeAdmin');
 
 /* GET home page. */
 router.get('/', authenticateJWT, authorizeAdmin, userController.get_users);

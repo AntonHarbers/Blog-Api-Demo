@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const commentController = require('../controllers/comment_controller');
-var authenticateJWT = require('../helpers/authenticateJWT');
+var authenticateJWT = require('../middleware/authenticateJWT');
 
 /* GET home page. */
 router.get('/', commentController.get_comments);
