@@ -8,6 +8,7 @@ require('dotenv').config();
 
 exports.get_session = [
   (req, res, next) => {
+    console.log('yis');
     const token = req.headers.authorization.split(' ')[1];
 
     try {
@@ -89,11 +90,11 @@ exports.post_log_in = [
     if (!errors.isEmpty()) return res.send(errors.array());
 
     const user = await User.find({ username: req.body.username }).exec();
-    if (user.length == 0) return res.send('User not found');
+    if (user.length == 0) return res.json('User not found');
 
     const match = await bcrypt.compare(req.body.password, user[0].password);
     if (!match) {
-      return res.send('Incorrect Password');
+      return res.json('Incorrect Password');
     }
 
     const token = jwt.sign(
