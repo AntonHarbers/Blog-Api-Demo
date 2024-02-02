@@ -81,16 +81,18 @@ exports.update_post = [
       return res.status(404).json({ errors: 'Post not found' });
     }
 
+    console.log(req.body.is_published);
     let updatedPost = {};
     if (req.body.title) updatedPost.title = req.body.title;
     if (req.body.content) updatedPost.content = req.body.content;
-    if (req.body.is_published) updatedPost.is_published = req.body.is_published;
+    if (req.body.is_published !== undefined)
+      updatedPost.is_published = req.body.is_published;
 
-    await Post.findByIdAndUpdate(req.params.id, updatedPost, {
+    const newPost = await Post.findByIdAndUpdate(req.params.id, updatedPost, {
       new: true,
     }).exec();
 
-    return res.send('Post updated succesfully');
+    return res.json(newPost);
   }),
 ];
 
@@ -102,8 +104,8 @@ exports.delete_post = [
       return res.status(404).json({ errors: 'Post not found' });
     }
 
-    await Post.findByIdAndDelete(req.params.id).exec();
+    const deletedPost = await Post.findByIdAndDelete(req.params.id).exec();
 
-    return res.send('Post deleted');
+    return res.json(deletedPost);
   }),
 ];

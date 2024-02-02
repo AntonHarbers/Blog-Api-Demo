@@ -87,7 +87,7 @@ exports.post_log_in = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.send(errors.array());
+    if (!errors.isEmpty()) return res.json(errors.array());
 
     const user = await User.find({ username: req.body.username }).exec();
     if (user.length == 0) return res.json('User not found');
