@@ -91,6 +91,9 @@ exports.update_comment = [
     .isLength({ min: 1 })
     .escape(),
   asyncHandler(async (req, res, next) => {
+    if (!req.user.is_admin) {
+      res.json('You are not an admin');
+    }
     const comment = await Comment.findById(req.params.id).exec();
 
     if (!comment) {
@@ -118,6 +121,9 @@ exports.update_comment = [
 exports.delete_comment = [
   asyncHandler(async (req, res, next) => {
     console.log(req.params.id);
+    if (!req.user.is_admin) {
+      res.json('You are not an admin');
+    }
     try {
       res.json(await Comment.findByIdAndDelete(req.params.id));
     } catch (err) {

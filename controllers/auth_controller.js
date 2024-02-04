@@ -108,10 +108,3 @@ exports.post_log_in = [
     res.json({ token: token, admin: user[0].is_admin });
   }),
 ];
-
-exports.get_log_out = [
-  (req, res, next) => {
-    // client should delete the token here
-    res.send('Logout successfull');
-  },
-];

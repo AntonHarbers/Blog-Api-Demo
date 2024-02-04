@@ -48,6 +48,10 @@ exports.post_post = [
       res.json(errors);
     }
 
+    if (!req.user.is_admin) {
+      res.json('You are not an admin');
+    }
+
     const post = new Post({
       title: req.body.title,
       content: req.body.content,
@@ -58,6 +62,7 @@ exports.post_post = [
     });
 
     await post.save();
+
     res.json(post);
   }),
 ];
@@ -84,6 +89,10 @@ exports.update_post = [
       return res.status(404).json({ errors: errors.array() });
     }
 
+    if (!req.user.is_admin) {
+      res.json('You are not an admin');
+    }
+
     const post = await Post.findById(req.params.id).exec();
     if (!post) {
       return res.status(404).json({ errors: 'Post not found' });
@@ -106,6 +115,10 @@ exports.update_post = [
 
 exports.delete_post = [
   asyncHandler(async (req, res, next) => {
+    if (!req.user.is_admin) {
+      res.json('You are not an admin');
+    }
+
     const post = await Post.findById(req.params.id);
 
     if (!post) {

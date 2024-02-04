@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 
 exports.get_users = [
   asyncHandler(async (req, res, next) => {
-    if (!req.user.is_admin) return res.send('Not admin');
+    if (!req.user.is_admin) return res.json('You are not the admin');
     const users = await User.find({}).sort('username').exec();
     res.json(users);
   }),
