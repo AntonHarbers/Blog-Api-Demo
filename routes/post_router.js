@@ -6,6 +6,12 @@ const authorizeAdmin = require('../middleware/authorizeAdmin');
 
 /* GET home page. */
 router.get('/', postController.get_posts);
+router.get(
+  '/admin',
+  authenticateJWT,
+  authorizeAdmin,
+  postController.get_posts_admin
+);
 router.post('/', authenticateJWT, authorizeAdmin, postController.post_post);
 router.get('/:id', postController.get_post);
 router.put('/:id', authenticateJWT, authorizeAdmin, postController.update_post);

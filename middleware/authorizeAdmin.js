@@ -7,6 +7,7 @@ const authorizeAdmin = asyncHandler(async (req, res, next) => {
 
   req.user.is_admin = user[0].is_admin;
   req.user.id = user[0]._id;
+  req.user.username = user[0].username;
 
   next();
 });

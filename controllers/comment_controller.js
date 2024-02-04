@@ -10,12 +10,26 @@ exports.get_comments = [
     const comments = await Comment.find({})
       .sort({ created_at: 1 })
       .populate('author', 'email')
-      .populate('post', 'title created_at')
+      .populate('post', 'title created_at is_published')
       .exec();
 
-    res.json(comments);
+    const publishedComments = comments.filter(
+      (comment) => comment.post && comment.post.is_published
+    );
+
+    res.json(publishedComments);
   }),
 ];
+
+exports.get_comments_admin = asyncHandler(async (req, res, next) => {
+  const comments = await Comment.find({})
+    .sort({ created_at: 1 })
+    .populate('author', 'email')
+    .populate('post', 'title created_at')
+    .exec();
+
+  res.json(comments);
+});
 
 exports.get_comment = [
   asyncHandler(async (req, res, next) => {

@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     minLength: 3,
     maxLength: 30,
   },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
   password: { type: String, required: true, minLength: 6 },
   created_at: { type: Date, default: Date.now() },
   is_admin: { type: Boolean, default: false },

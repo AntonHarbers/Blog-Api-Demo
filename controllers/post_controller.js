@@ -5,13 +5,21 @@ const Post = require('../models/post_model');
 
 exports.get_posts = [
   asyncHandler(async (req, res, next) => {
-    const posts = await Post.find({})
+    const posts = await Post.find({ is_published: true })
       .sort({ created_at: 1 })
       .populate('author', 'username email')
       .exec();
     res.json(posts);
   }),
 ];
+
+exports.get_posts_admin = asyncHandler(async (req, res, next) => {
+  const posts = await Post.find({})
+    .sort({ created_at: 1 })
+    .populate('author', 'username email')
+    .exec();
+  res.json(posts);
+});
 
 exports.get_post = [
   asyncHandler(async (req, res, next) => {

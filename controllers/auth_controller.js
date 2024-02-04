@@ -21,6 +21,8 @@ exports.get_session = [
         message: 'You are signed in.',
         expiresIn: timeLeft > 0 ? `${timeLeft} seconds` : 'Token expired',
         admin: req.user.is_admin,
+        user_id: req.user.id,
+        user_name: req.user.username,
       });
     } catch (error) {
       res.status(400).json({ error: 'Invalid token' });
@@ -67,7 +69,7 @@ exports.post_sign_up = [
         });
 
         await user.save();
-        res.send(user);
+        res.json(user);
         return;
       }
     });
@@ -102,7 +104,8 @@ exports.post_log_in = [
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-    res.json({ token });
+
+    res.json({ token: token, admin: user[0].is_admin });
   }),
 ];
 
