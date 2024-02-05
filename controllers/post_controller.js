@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 require('dotenv').config();
 const Post = require('../models/post_model');
+const Comment = require('../models/comment_model');
 
 exports.get_posts = [
   asyncHandler(async (req, res, next) => {
@@ -126,6 +127,8 @@ exports.delete_post = [
     }
 
     const deletedPost = await Post.findByIdAndDelete(req.params.id).exec();
+
+    await Comment.deleteMany({ post: req.params.id }).exec();
 
     return res.json(deletedPost);
   }),

@@ -9,7 +9,7 @@ exports.get_comments = [
   asyncHandler(async (req, res, next) => {
     const comments = await Comment.find({})
       .sort({ created_at: 1 })
-      .populate('author', 'email')
+      .populate('author', 'email username is_admin')
       .populate('post', 'title created_at is_published')
       .exec();
 
@@ -24,8 +24,8 @@ exports.get_comments = [
 exports.get_comments_admin = asyncHandler(async (req, res, next) => {
   const comments = await Comment.find({})
     .sort({ created_at: 1 })
-    .populate('author', 'email')
-    .populate('post', 'title created_at')
+    .populate('author', 'email username is_admin')
+    .populate('post', 'title created_at is_published')
     .exec();
 
   res.json(comments);
@@ -82,7 +82,7 @@ exports.update_comment = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('auhorId', 'Author ID must not be empty')
+  body('authorId', 'Author ID must not be empty')
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -94,27 +94,36 @@ exports.update_comment = [
     if (!req.user.is_admin) {
       res.json('You are not an admin');
     }
-    const comment = await Comment.findById(req.params.id).exec();
+    const errors = validationResult(req);
 
-    if (!comment) {
-      const err = new Error('Comment not found');
-      err.status = 404;
-      return next(err);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const updatedComment = new Comment({
+    const updatedComment = {
       content: req.body.content,
-      author: req.body.auhtorId,
+      author: req.body.authorId,
       post: req.body.postId,
-    });
+    };
 
     const savedComment = await Comment.findByIdAndUpdate(
       req.params.id,
       updatedComment,
-      {}
-    );
+      { new: true }
+    ).exec();
 
-    return res.json(savedComment);
+    console.log(savedComment);
+
+    if (!savedComment) {
+      res.status(404).json({ message: 'Comment not found' });
+    } else {
+      const populatedComment = await Comment.findById(savedComment._id)
+        .populate('author', 'username email')
+        .populate('post', 'title content')
+        .exec();
+
+      res.json(populatedComment);
+    }
   }),
 ];
 
