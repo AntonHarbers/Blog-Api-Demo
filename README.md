@@ -2,7 +2,11 @@
 
 A simple backend only API made for the odin project. Made using express, passport and mongoDB.
 
-[Live Link]()
+[Frontend App Repo](https://github.com/AntonHarbers/blog-frontend-demo)
+[Frontend App Live]()
+[Author Page Repo](https://github.com/AntonHarbers/blog-author-page-demo)
+[Author Page]()
+[Rest-API Enpoint]()
 
 ## Key Concepts
 
