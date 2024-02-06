@@ -3,10 +3,10 @@
 A simple backend only API made for the odin project. Made using express, passport and mongoDB.
 
 [Frontend App Repo](https://github.com/AntonHarbers/blog-frontend-demo)
-[Frontend App Live]()
+[Frontend App Live](https://famous-dolphin-e32fb4.netlify.app/)
 [Author Page Repo](https://github.com/AntonHarbers/blog-author-page-demo)
-[Author Page]()
-[Rest-API Enpoint]()
+[Author Page](https://blog-author-page-demo-osga3btfh-tmonee23.vercel.app/)
+[Rest-API Enpoint](https://cerulean-diagnostic-watercress.glitch.me/)
 
 ## Key Concepts
 
